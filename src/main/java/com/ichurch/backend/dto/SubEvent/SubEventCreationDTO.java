@@ -17,8 +17,8 @@ public class SubEventCreationDTO {
     private String name;
     private Timestamp startDate;
     private Timestamp endDate;
-    private String[] listener;
-    private String[] speaker;
+//    private String[] listener; @TODO
+//    private String[] speaker; @TODO
     private String place;
 
     public static SubEvent dtoToModel(SubEventCreationDTO dto) {
@@ -27,8 +27,8 @@ public class SubEventCreationDTO {
                 .name(dto.getName())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
-//                .listener(dto.getListener())
-//                .speaker(dto.getSpeaker())
+//                .listener(dto.getListener()) @TODO
+//                .speaker(dto.getSpeaker()) @TODO
                 .place(dto.getPlace())
                 .build();
     }

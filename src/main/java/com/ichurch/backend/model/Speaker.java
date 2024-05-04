@@ -10,16 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+@Data
 @Table(indexes = {
-        @Index(name = "idx_lstnr_email", columnList = "email"),
-        @Index(name = "listener_lstnr_id", columnList = "id")
+        @Index(name = "idx_spkr_email", columnList = "email"),
+        @Index(name = "idx_spkr_id", columnList = "id")
 })
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Listener {
+public class Speaker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,17 +27,15 @@ public class Listener {
     private String name;
     private String email;
     private Integer age;
-    private Boolean visitor;
-
+    private Boolean visitor = true;
     @ManyToMany
-    @JoinTable(name = "subevent_listener",
-            joinColumns = @JoinColumn(name = "listener_id"),
+    @JoinTable(name = "subevent_speaker",
+            joinColumns = @JoinColumn(name = "speaker_id"),
             inverseJoinColumns = @JoinColumn(name = "subevent_id"))
     private List<SubEvent> subEvents;
 
     @PrePersist
     private void onSave(){
-        this.setVisitor(true);
         this.setSubEvents(new ArrayList<SubEvent>());
     }
 }

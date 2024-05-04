@@ -1,7 +1,9 @@
 package com.ichurch.backend.config.ExceptionHandler;
 
 import com.ichurch.backend.CustomEx.ElementNotFoundException;
+import com.ichurch.backend.CustomEx.RedundancyException;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionMessageBuilder> handleIllegalArgsException(IllegalArgumentException ex) {
 
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(),"Illegal Arguments");
+        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Illegal Arguments");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionMessageBuilder);
     }
@@ -38,10 +40,18 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionMessageBuilder);
     }
+    @ExceptionHandler(RedundancyException.class)
+    public ResponseEntity<ExceptionMessageBuilder> handleRedundancyException(RedundancyException ex) {
+        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Redundancy");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionMessageBuilder);
+    }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor: " + e.getMessage());
+    public ResponseEntity<ExceptionMessageBuilder> handleException(Exception ex) {
+        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Internal Server Error");
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionMessageBuilder);
     }
 
 }

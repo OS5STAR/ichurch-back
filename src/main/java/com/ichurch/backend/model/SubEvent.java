@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(indexes = {@Index(name = "idx_subevnt_id", columnList = "id")})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,8 +32,15 @@ public class SubEvent {
     private Timestamp endDate;
 
     @ManyToMany(mappedBy = "subEvents")
-    private List<Listener> listeners = new ArrayList<Listener>();
+    private List<Listener> listeners;
 
-    private String[] speaker;
+    @ManyToMany(mappedBy = "subEvents")
+    private List<Speaker> speakers;
     private String place;
+
+    @PrePersist
+    private void onSave(){
+        this.setListeners(new ArrayList<Listener>());
+        this.setSpeakers(new ArrayList<Speaker>());
+    }
 }

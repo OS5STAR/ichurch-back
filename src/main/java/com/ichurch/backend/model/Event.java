@@ -36,5 +36,9 @@ public class Event {
     private List<SubEvent> subEvents = new ArrayList<SubEvent>();
 
 
+    @PrePersist
+    private void onSave(){
+        this.subEvents = new ArrayList<SubEvent>();
+    }
 }
 

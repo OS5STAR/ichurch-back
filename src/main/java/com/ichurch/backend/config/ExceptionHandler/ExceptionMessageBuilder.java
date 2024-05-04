@@ -34,7 +34,5 @@ public class ExceptionMessageBuilder {
         this.stack = stack;
 
     }
-
-
 }
 

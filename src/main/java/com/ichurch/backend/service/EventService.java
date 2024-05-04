@@ -21,6 +21,10 @@ public class EventService {
     }
 
     public EventViewDTO createEvent(EventCreationDTO dto) {
+        if(!isValid(dto)){
+            throw new IllegalArgumentException("Fields missing");
+        }
+
         if(dto.getStartDate().after(dto.getEndDate())){
             throw new IllegalArgumentException("Event start date cannot be greater than event end date");
         }
@@ -30,5 +34,9 @@ public class EventService {
         eventRepo.save(event);
 
         return EventViewDTO.modelToDto(event);
+    }
+
+    private boolean isValid(EventCreationDTO dto){
+        return dto.getName() != null && dto.getStatus() != null && dto.getEndDate() != null && dto.getStartDate() != null;
     }
 }

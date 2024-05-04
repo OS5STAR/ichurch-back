@@ -7,8 +7,10 @@ import com.ichurch.backend.service.SubEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +30,7 @@ public class EventController {
 
     @PostMapping(value = "/{eventId}/subevent")
     public ResponseEntity<?> addSubEvent(@RequestBody SubEventCreationDTO dto,
-                                         @PathVariable("eventId") UUID eventId){
+                                         @PathVariable("eventId") UUID eventId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subEventService.create(dto, eventId));
     }
 
