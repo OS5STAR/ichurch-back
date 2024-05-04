@@ -6,6 +6,7 @@ public enum EventStatus {
     CREATED("Created"),
     SCHEDULED("Scheduled"),
     RESCHEDULED("Rescheduled"),
+    HAPPENING("Happening"),
     FINISHED("Finished"),
     CANCELED("Canceled");
 

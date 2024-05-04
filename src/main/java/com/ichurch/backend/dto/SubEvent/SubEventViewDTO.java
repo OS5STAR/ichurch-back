@@ -28,16 +28,6 @@ public class SubEventViewDTO {
 
     public static SubEventViewDTO modelToDTO(SubEvent subEvent) {
 
-//        List<ListenerViewDTO> listenerList = new ArrayList<>();
-//        List<SpeakerViewDTO> speakerList = new ArrayList<>();
-
-//        if(subEvent.getListeners() != null && !subEvent.getListeners().isEmpty()){
-//            subEvent.getListeners().forEach(l -> listenerList.add(ListenerViewDTO.modelToDTO(l)));
-//        }
-//        if(subEvent.getSpeakers() != null && !subEvent.getSpeakers().isEmpty()){
-//            subEvent.getSpeakers().forEach(s -> speakerList.add(SpeakerViewDTO.modelToDTO(s)));
-//        }
-
         if (subEvent.getSpeakers() == null) {
             throw new RuntimeException("Speakers list is null");
         }

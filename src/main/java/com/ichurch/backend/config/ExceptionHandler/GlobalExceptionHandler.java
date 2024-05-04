@@ -2,6 +2,8 @@ package com.ichurch.backend.config.ExceptionHandler;
 
 import com.ichurch.backend.CustomEx.ElementNotFoundException;
 import com.ichurch.backend.CustomEx.RedundancyException;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -14,44 +16,34 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 
 @ControllerAdvice
-@ComponentScan
 public class GlobalExceptionHandler {
 
 
+    @Autowired
+    private HttpServletRequest request;
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ExceptionMessageBuilder> handleNoHandlerFoundException(NoResourceFoundException ex) {
-
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder("Resource not found: " + ex.getResourcePath(),"Invalid Endpoint");
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionMessageBuilder);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionMessageBuilder("Resource not found", "Invalid Endpoint", request.getRequestURL()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionMessageBuilder> handleIllegalArgsException(IllegalArgumentException ex) {
-
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Illegal Arguments");
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionMessageBuilder);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionMessageBuilder(ex.getMessage(), "Illegal Arguments", request.getRequestURL()));
     }
 
-    @ExceptionHandler(ElementNotFoundException.class)
-    public ResponseEntity<ExceptionMessageBuilder> handleElementNotFoundException(ElementNotFoundException ex) {
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Not Found");
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionMessageBuilder);
-    }
-    @ExceptionHandler(RedundancyException.class)
-    public ResponseEntity<ExceptionMessageBuilder> handleRedundancyException(RedundancyException ex) {
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Redundancy");
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionMessageBuilder);
+    @ExceptionHandler({ElementNotFoundException.class, RedundancyException.class})
+    public ResponseEntity<ExceptionMessageBuilder> handleCustomExceptions(Exception ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionMessageBuilder(ex.getMessage(), "Custom Exception", request.getRequestURL()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionMessageBuilder> handleException(Exception ex) {
-        ExceptionMessageBuilder exceptionMessageBuilder = new ExceptionMessageBuilder(ex.getMessage(), "Internal Server Error");
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionMessageBuilder);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionMessageBuilder(ex.getMessage(), "Internal Server Error", request.getRequestURL()));
     }
 
 }
