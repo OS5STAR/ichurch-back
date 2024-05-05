@@ -14,7 +14,7 @@ Para executar o projeto localmente, siga estas etapas:
 2. Clone este repositório para o seu ambiente local.
 3. Configure um banco de dados PostgreSQL em sua máquina ou use um serviço de banco de dados remoto.
 4. Configure as informações de conexão com o banco de dados no arquivo `application.properties`.
-5. Execute o comando `mvn spring-boot:run` na raiz do projeto para iniciar o servidor Spring Boot.
+5. Execute o comando `mvn spring-boot:run` na raiz do projeto para iniciar o servidor Spring Boot
 
 ## Contribuição
 
