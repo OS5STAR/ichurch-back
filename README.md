@@ -1,6 +1,6 @@
 # ichurch-back
 
-Este é o repositório do backend do projeto iChurch, uma aplicação de gerenciamento de eventos para igrejas.
+Este é o repositório do backend do projeto iChurch, uma aplicação de gerenciamento de eventos para igrejas
 
 ## Visão Geral
 
