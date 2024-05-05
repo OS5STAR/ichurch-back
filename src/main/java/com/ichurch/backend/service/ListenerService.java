@@ -63,10 +63,6 @@ public class ListenerService {
     }
 
     private boolean isValid(ListenerCreationDTO dto){
-        if(dto.getAge() <= 0 || dto.getAge() > 110){
-            return false;
-        }
-
-        return true;
+        return dto.getAge() > 0 && dto.getAge() <= 110;
     }
 }

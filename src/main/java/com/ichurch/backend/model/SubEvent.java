@@ -1,5 +1,6 @@
 package com.ichurch.backend.model;
 
+import com.ichurch.backend.enums.EventStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class SubEvent {
     private String name;
     private Timestamp startDate;
     private Timestamp endDate;
+    private EventStatus status;
 
     @ManyToMany(mappedBy = "subEvents")
     private List<Listener> listeners;

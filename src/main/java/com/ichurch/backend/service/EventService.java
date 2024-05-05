@@ -62,7 +62,6 @@ public class EventService {
         }
 
         eventRepo.save(event);
-
         return EventViewDTO.modelToDto(event);
     }
 
