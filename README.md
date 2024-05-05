@@ -4,7 +4,7 @@ Este é o repositório do backend do projeto iChurch, uma aplicação de gerenci
 
 ## Visão Geral
 
-O iChurch é uma aplicação web projetada para ajudar igrejas a gerenciar e organizar eventos, como cultos, conferências, grupos de estudo, entre outros. O backend é construído em Java com Spring Boot e utiliza um banco de dados PostgreSQL para armazenar os dados.
+O iChurch é uma aplicação web projetada para ajudar igrejas a gerenciar e organizar eventos, como cultos, conferências, grupos de estudo, entre outros. O backend é construído em Java com Spring Boot e utiliza um banco de dados PostgreSQL para armazenar os dados
 
 ## Como Executar
 
