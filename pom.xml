@@ -12,7 +12,7 @@
 	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>backend</name>
-	<description>Backend project for gonzes ichurch</description>
+	<description>Backend project for metal ichurch</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
