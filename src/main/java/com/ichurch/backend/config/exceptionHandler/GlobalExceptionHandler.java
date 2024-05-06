@@ -1,19 +1,14 @@
-package com.ichurch.backend.config.ExceptionHandler;
+package com.ichurch.backend.config.exceptionHandler;
 
-import com.ichurch.backend.CustomEx.ElementNotFoundException;
-import com.ichurch.backend.CustomEx.RedundancyException;
+import com.ichurch.backend.customExceptions.ElementNotFoundException;
+import com.ichurch.backend.customExceptions.RedundancyException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-
-import java.sql.Timestamp;
-import java.util.Arrays;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

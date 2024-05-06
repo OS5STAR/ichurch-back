@@ -1,7 +1,6 @@
-package com.ichurch.backend.config.ExceptionHandler;
+package com.ichurch.backend.config.exceptionHandler;
 
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
 import java.sql.Timestamp;

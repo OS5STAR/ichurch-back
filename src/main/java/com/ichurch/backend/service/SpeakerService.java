@@ -1,6 +1,6 @@
 package com.ichurch.backend.service;
 
-import com.ichurch.backend.CustomEx.ElementNotFoundException;
+import com.ichurch.backend.customExceptions.ElementNotFoundException;
 import com.ichurch.backend.dto.Speaker.SpeakerCreationDTO;
 import com.ichurch.backend.model.Speaker;
 import com.ichurch.backend.model.SubEvent;

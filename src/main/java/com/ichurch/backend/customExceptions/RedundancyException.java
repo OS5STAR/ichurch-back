@@ -1,4 +1,4 @@
-package com.ichurch.backend.CustomEx;
+package com.ichurch.backend.customExceptions;
 
 public class RedundancyException extends RuntimeException{
 
