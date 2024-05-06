@@ -30,7 +30,7 @@ public class SubEventService {
     public SubEventViewDTO create(SubEventCreationDTO dto, UUID eventId) {
 
         Event event = eventRepo.findById(eventId)
-                .orElseThrow(() -> new ElementNotFoundException("Event not found"));
+                .orElseThrow(() -> new ElementNotFoundException("Event not founds"));
         dto.setEvent(event);
 
         SubEvent subEvent = SubEventCreationDTO.dtoToModel(dto);
