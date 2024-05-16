@@ -1,7 +1,7 @@
 package com.ichurch.backend.service;
 
-import com.ichurch.backend.CustomEx.ElementNotFoundException;
-import com.ichurch.backend.CustomEx.RedundancyException;
+import com.ichurch.backend.customExceptions.ElementNotFoundException;
+import com.ichurch.backend.customExceptions.RedundancyException;
 import com.ichurch.backend.dto.Listener.ListenerCreationDTO;
 import com.ichurch.backend.dto.Listener.ListenerViewDTO;
 import com.ichurch.backend.model.Listener;
@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service

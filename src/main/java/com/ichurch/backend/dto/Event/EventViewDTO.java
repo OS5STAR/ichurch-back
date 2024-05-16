@@ -1,17 +1,14 @@
 package com.ichurch.backend.dto.Event;
 
-import com.ichurch.backend.CustomEx.ElementNotFoundException;
 import com.ichurch.backend.dto.SubEvent.SubEventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
-import com.ichurch.backend.model.SubEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
