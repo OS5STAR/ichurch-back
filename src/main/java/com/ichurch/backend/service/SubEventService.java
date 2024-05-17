@@ -28,9 +28,9 @@ public class SubEventService {
 
         Event event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new ElementNotFoundException("Event not found"));
-        dto.setEvent(event);
 
         SubEvent subEvent = SubEventCreationDTO.dtoToModel(dto);
+        subEvent.setEvent(event);
 
         subEventRepo.save(subEvent);
         return SubEventViewDTO.modelToDTO(subEvent);
@@ -41,5 +41,13 @@ public class SubEventService {
         return SubEventViewDTO.modelToDTO(
                 subEventRepo.findById(subEventId)
                         .orElseThrow(() -> new ElementNotFoundException("Sub event not found")));
+    }
+
+    public Object updateSubEvent(UUID subEventId, SubEventCreationDTO dto) {
+        return "NOT IMPLEMENTED";
+    }
+
+    public Object deleteSubEvent(UUID subEventId) {
+        return "NOT IMPLEMENTED";
     }
 }

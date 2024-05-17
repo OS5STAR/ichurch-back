@@ -42,7 +42,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/{eventId}/subevent")
-    public ResponseEntity<?> addSubEvent(@RequestBody SubEventCreationDTO dto,
+    public ResponseEntity<?> addSubEvent(@Valid @RequestBody SubEventCreationDTO dto,
                                          @PathVariable("eventId") UUID eventId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subEventService.create(dto, eventId));
     }
@@ -50,7 +50,7 @@ public class EventController {
 
     @PatchMapping(value = "/{eventId}")
     public ResponseEntity<?> updateEvent(@PathVariable UUID eventId,
-                                         @RequestBody EventCreationDTO dto){
+                                         @Valid @RequestBody EventCreationDTO dto){
         return ResponseEntity.status(HttpStatus.OK).body(eventService.updateEvent(eventId, dto));
     }
 

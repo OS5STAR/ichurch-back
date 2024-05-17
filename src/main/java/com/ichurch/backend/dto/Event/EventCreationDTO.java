@@ -32,7 +32,7 @@ public class EventCreationDTO {
 
     @AssertTrue(message = "Ending date must be after Starting date.")
     private boolean isDate(){
-        return (startDate.before(endDate));
+        return startDate.before(endDate);
     }
 
     public static Event dtoToModel(EventCreationDTO dto){
