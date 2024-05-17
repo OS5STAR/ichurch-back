@@ -29,10 +29,7 @@ public class Listener {
     private Integer age;
     private Boolean visitor;
 
-    @ManyToMany
-    @JoinTable(name = "subevent_listener",
-            joinColumns = @JoinColumn(name = "listener_id"),
-            inverseJoinColumns = @JoinColumn(name = "subevent_id"))
+    @ManyToMany(mappedBy = "listeners")
     private List<SubEvent> subEvents;
 
     @PrePersist

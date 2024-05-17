@@ -28,10 +28,7 @@ public class Speaker {
     private String email;
     private Integer age;
     private Boolean visitor = true;
-    @ManyToMany
-    @JoinTable(name = "subevent_speaker",
-            joinColumns = @JoinColumn(name = "speaker_id"),
-            inverseJoinColumns = @JoinColumn(name = "subevent_id"))
+    @ManyToMany(mappedBy = "speakers")
     private List<SubEvent> subEvents;
 
     @PrePersist

@@ -6,12 +6,15 @@ import com.ichurch.backend.dto.Event.EventCreationDTO;
 import com.ichurch.backend.dto.Event.EventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
+import com.ichurch.backend.model.Listener;
 import com.ichurch.backend.repository.EventRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -91,4 +94,12 @@ public class EventService {
         }
     }
 
+    @Transactional
+    public Object deleteEvent(UUID eventId) {
+        Event event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new ElementNotFoundException("Event not found"));
+        eventRepo.delete(event);
+
+        return "OK";
+    }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -33,6 +34,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionMessageBuilder> handleCustomExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionMessageBuilder(ex.getMessage(), "Custom Exception", request.getRequestURL()));
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ExceptionMessageBuilder> handleMethodArgsNotValidExceptions(MethodArgumentNotValidException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionMessageBuilder(ex, "Invalid Parameters", request.getRequestURL()));
     }
 
     @ExceptionHandler(Exception.class)
