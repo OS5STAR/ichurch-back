@@ -6,12 +6,15 @@ import com.ichurch.backend.dto.Event.EventCreationDTO;
 import com.ichurch.backend.dto.Event.EventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
+import com.ichurch.backend.model.Listener;
 import com.ichurch.backend.repository.EventRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,7 +30,6 @@ public class EventService {
     }
 
     public AllEventViewDTO getAllEvents() {
-
         return AllEventViewDTO.allEventViewDTO(eventRepo.findAll().stream().map(EventViewDTO::modelToDto).collect(Collectors.toList()), eventRepo.count());
 
     }
@@ -38,9 +40,7 @@ public class EventService {
         }
 
         Event event = EventCreationDTO.dtoToModel(dto);
-
         eventRepo.save(event);
-
         return EventViewDTO.modelToDto(event);
     }
 
@@ -65,6 +65,11 @@ public class EventService {
         return EventViewDTO.modelToDto(event);
     }
 
+    /**
+     * REDUDANTE
+     * Valida se o inicio do evento é antes do final do mesmo.
+     * O Controller ja faz a validação
+     */
     private boolean isInvalid(EventCreationDTO dto) {
 
         if (dto.getStartDate().after(dto.getEndDate())) {
@@ -76,6 +81,10 @@ public class EventService {
                 || dto.getEndDate() == null;
     }
 
+    /**
+     * IGNORAR
+     * A ser movida.
+     */
     private void validateEventStatus() {
 
         LocalDateTime now = LocalDateTime.now();
@@ -91,4 +100,18 @@ public class EventService {
         }
     }
 
+    /**
+     * MELHORAR RESPOSTA?
+     * Deleta evento !?
+     * @param eventId
+     * @return
+     */
+    @Transactional
+    public Object deleteEvent(UUID eventId) {
+        Event event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new ElementNotFoundException("Event not found"));
+        eventRepo.delete(event);
+
+        return "OK";
+    }
 }

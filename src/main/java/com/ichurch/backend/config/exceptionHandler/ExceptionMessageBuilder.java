@@ -2,8 +2,13 @@ package com.ichurch.backend.config.exceptionHandler;
 
 
 import lombok.Data;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Data
 public class ExceptionMessageBuilder {
@@ -13,6 +18,7 @@ public class ExceptionMessageBuilder {
     private StringBuffer URL;
     private Timestamp errorTime = new Timestamp(System.currentTimeMillis());
     private Object stack = "Stack Trace not given";
+    private List<messageObj> validationError;
 
     public ExceptionMessageBuilder(String message, String error, Timestamp errorTime, StackTraceElement stack) {
         this.message = message;
@@ -35,6 +41,28 @@ public class ExceptionMessageBuilder {
         this.message = message;
         this.error = error;
         this.stack = stack;
+    }
+
+    public ExceptionMessageBuilder(MethodArgumentNotValidException ex, String error, StringBuffer URI) {
+        List<messageObj> listErrors = new ArrayList<>();
+        for(var er : ex.getBindingResult().getAllErrors()){
+            listErrors.add(new messageObj(er.getCodes()[1].substring(er.getCodes()[1].indexOf(".")+1), er.getDefaultMessage()));
+        }
+        this.validationError = listErrors;
+        this.message = "Request validation error.";
+        this.error = error;
+        this.URL = URI;
+    }
+
+    @Data
+    private class messageObj{
+        private String fieldName;
+        private String errorCause;
+
+        private messageObj(String fieldName, String errorCause){
+            this.fieldName = fieldName;
+            this.errorCause = errorCause;
+        }
     }
 
 }

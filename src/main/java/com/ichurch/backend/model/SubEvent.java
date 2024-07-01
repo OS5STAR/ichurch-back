@@ -33,11 +33,18 @@ public class SubEvent {
     private Timestamp endDate;
     private EventStatus status;
 
-    @ManyToMany(mappedBy = "subEvents")
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "subevent_listener",
+            joinColumns = @JoinColumn(name = "subevent_id"),
+            inverseJoinColumns = @JoinColumn(name = "listener_id"))
     private List<Listener> listeners;
 
-    @ManyToMany(mappedBy = "subEvents")
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "subevent_speaker",
+            joinColumns = @JoinColumn(name = "subevent_id"),
+            inverseJoinColumns = @JoinColumn(name = "speaker_id"))
     private List<Speaker> speakers;
+
     private String place;
 
     @PrePersist

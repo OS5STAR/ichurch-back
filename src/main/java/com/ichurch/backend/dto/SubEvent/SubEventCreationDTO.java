@@ -7,6 +7,10 @@ import com.ichurch.backend.model.Event;
 import com.ichurch.backend.model.Listener;
 import com.ichurch.backend.model.Speaker;
 import com.ichurch.backend.model.SubEvent;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,14 +25,25 @@ import java.util.stream.Collectors;
 @Data
 public class SubEventCreationDTO {
 
-    private Event event;
+    @NotNull
+    @NotBlank
     private String name;
+    @NotNull
+    @Future
     private Timestamp startDate;
+    @NotNull
+    @Future
     private Timestamp endDate;
+    @NotNull
     private EventStatus status;
     private List<ListenerCreationDTO> listeners;
     private List<SpeakerCreationDTO> speakers;
     private String place;
+
+    @AssertTrue
+    private boolean isDate(){
+        return startDate.before(endDate);
+    }
 
     public static SubEvent dtoToModel(SubEventCreationDTO dto) {
 
@@ -40,7 +55,6 @@ public class SubEventCreationDTO {
 //        }
 
         return SubEvent.builder()
-                .event(dto.getEvent())
                 .name(dto.getName())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
