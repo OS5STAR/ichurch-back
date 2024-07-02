@@ -3,10 +3,7 @@ package com.ichurch.backend.dto.SubEvent;
 import com.ichurch.backend.dto.Listener.ListenerCreationDTO;
 import com.ichurch.backend.dto.Speaker.SpeakerCreationDTO;
 import com.ichurch.backend.enums.EventStatus;
-import com.ichurch.backend.model.Event;
-import com.ichurch.backend.model.Listener;
-import com.ichurch.backend.model.Speaker;
-import com.ichurch.backend.model.SubEvent;
+import com.ichurch.backend.model.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -29,10 +26,8 @@ public class SubEventCreationDTO {
     @NotBlank
     private String name;
     @NotNull
-    @Future
     private Timestamp startDate;
     @NotNull
-    @Future
     private Timestamp endDate;
     @NotNull
     private EventStatus status;
@@ -61,8 +56,8 @@ public class SubEventCreationDTO {
                 .status(dto.getStatus())
 //                .listeners(dto.getListeners().stream().map(ListenerCreationDTO::dtoToModel).collect(Collectors.toList()))
 //                .speakers(dto.getSpeakers().stream().map(SpeakerCreationDTO::dtoToModel).collect(Collectors.toList()))
-                .listeners(new ArrayList<Listener>())
-                .speakers(new ArrayList<Speaker>())
+                .listeners(new ArrayList<User>())
+                .speakers(new ArrayList<User>())
                 .place(dto.getPlace())
                 .build();
     }

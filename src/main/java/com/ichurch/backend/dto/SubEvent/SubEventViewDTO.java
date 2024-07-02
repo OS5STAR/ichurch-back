@@ -2,6 +2,7 @@ package com.ichurch.backend.dto.SubEvent;
 
 import com.ichurch.backend.dto.Listener.ListenerViewDTO;
 import com.ichurch.backend.dto.Speaker.SpeakerViewDTO;
+import com.ichurch.backend.dto.User.UserViewDTO;
 import com.ichurch.backend.model.SubEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,8 @@ public class SubEventViewDTO {
     private UUID subEventId;
     private Timestamp startDate;
     private Timestamp endDate;
-    private List<ListenerViewDTO> listeners;
-    private List<SpeakerViewDTO> speakers;
+    private List<UserViewDTO> listeners;
+    private List<UserViewDTO> speakers;
     private String place;
 
     public static SubEventViewDTO modelToDTO(SubEvent subEvent) {
@@ -37,8 +38,8 @@ public class SubEventViewDTO {
                 .subEventId(subEvent.getId())
                 .startDate(subEvent.getStartDate())
                 .endDate(subEvent.getEndDate())
-                .listeners(subEvent.getListeners().stream().map(ListenerViewDTO::modelToDTO).collect(Collectors.toList()))
-                .speakers(subEvent.getSpeakers().stream().map(SpeakerViewDTO::modelToDTO).collect(Collectors.toList()))
+                .listeners(subEvent.getListeners().stream().map(UserViewDTO::modelToDto).collect(Collectors.toList()))
+                .speakers(subEvent.getSpeakers().stream().map(UserViewDTO::modelToDto).collect(Collectors.toList()))
                 .place(subEvent.getPlace())
                 .build();
     }

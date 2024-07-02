@@ -39,21 +39,21 @@ public class ListenerService {
             throw new IllegalArgumentException("Listener is not valid");
         }
 
-        if (listener == null) {
-            listener = listenerRepo.save(ListenerCreationDTO.dtoToModel(dto));
-        }
+//        if (listener == null) {
+//            listener = listenerRepo.save(ListenerCreationDTO.dtoToModel(dto));
+//        }
 
-        if (subEvent.getListeners() == null || listener.getSubEvents() == null) {
-            throw new RuntimeException("Something went wrong with the lists.");
-        }
+//        if (subEvent.getListeners() == null || listener.getSubEvents() == null) {
+//            throw new RuntimeException("Something went wrong with the lists.");
+//        }
 
-        if(subEvent.getListeners().contains(listener)){
-            throw new RedundancyException(listener.getEmail() + " is already on this sub event.");
-        }
+//        if(subEvent.getListeners().contains(listener)){
+//            throw new RedundancyException(listener.getEmail() + " is already on this sub event.");
+//        }
 
 
-        listener.getSubEvents().add(subEvent);
-        subEvent.getListeners().add(listener);
+//        listener.getSubEvents().add(subEvent);
+//        subEvent.getListeners().add(listener);
 
         subEventRepo.save(subEvent);
         listenerRepo.save(listener);

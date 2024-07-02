@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 
 
 import jakarta.validation.constraints.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -22,13 +25,16 @@ public class EventCreationDTO {
     @Size(max =  255, message = "Name can't be over 255 characters.")
     private String name;
     @NotNull(message = "Starting date can't be null.")
-    @Future(message = "Event must start in a future date.")
     private Timestamp startDate;
     @NotNull(message = "Ending date can't be null.")
-    @Future(message = "Must end in a future date.")
     private Timestamp endDate;
     @NotNull(message = "Status can't be null.")
     private EventStatus status;
+    @NotNull(message = "Image URL can't be null.")
+    private String imageUrl;
+    @NotNull
+    private UUID userId;
+    private Long number;
 
     @AssertTrue(message = "Ending date must be after Starting date.")
     private boolean isDate(){
@@ -41,6 +47,8 @@ public class EventCreationDTO {
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .status(dto.getStatus())
+                .imageUrl(String.valueOf(dto.getImageUrl()))
+                .number(dto.getNumber())
                 .build();
     }
 }

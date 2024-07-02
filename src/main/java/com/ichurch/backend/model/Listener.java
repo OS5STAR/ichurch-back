@@ -28,13 +28,13 @@ public class Listener {
     private String email;
     private Integer age;
     private Boolean visitor;
-
-    @ManyToMany(mappedBy = "listeners")
-    private List<SubEvent> subEvents;
+//
+//    @ManyToMany(mappedBy = "listeners")
+//    private List<SubEvent> subEvents;
 
     @PrePersist
     private void onSave(){
         this.setVisitor(true);
-        this.setSubEvents(new ArrayList<SubEvent>());
+//        this.setSubEvents(new ArrayList<SubEvent>());
     }
 }

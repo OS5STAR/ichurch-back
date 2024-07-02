@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.annotation.processing.Generated;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +29,29 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @SequenceGenerator(name = "event_number_seq", sequenceName = "event_number_seq", allocationSize = 1)
+    @Column(nullable = false, unique = true)
+    private Long number;
     private String name;
     @Enumerated(EnumType.STRING)
     private EventStatus status;
     private Timestamp startDate;
     private Timestamp endDate;
+    private String imageUrl;
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SubEvent> subEvents = new ArrayList<SubEvent>();
+    private Timestamp createdAt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private User createdBy;
 
 
     @PrePersist
-    private void onSave(){
+    private void onSave() {
         this.subEvents = new ArrayList<SubEvent>();
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 }
 

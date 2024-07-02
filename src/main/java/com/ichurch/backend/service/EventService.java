@@ -7,11 +7,15 @@ import com.ichurch.backend.dto.Event.EventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
 import com.ichurch.backend.model.Listener;
+import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.EventRepo;
+import com.ichurch.backend.repository.UserRepo;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +28,10 @@ public class EventService {
 
     @Autowired
     private EventRepo eventRepo;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     public EventViewDTO getEventById(UUID eventId) {
         return EventViewDTO.modelToDto(eventRepo.findById(eventId).orElseThrow(() -> new ElementNotFoundException("Event not found")));
@@ -34,12 +42,18 @@ public class EventService {
 
     }
 
+    @SneakyThrows
     public EventViewDTO createEvent(EventCreationDTO dto) {
         if (isInvalid(dto)) {
             throw new IllegalArgumentException("Fields missing");
         }
 
+        User user = userRepo.findById(dto.getUserId())
+                .orElseThrow(() -> new ElementNotFoundException("Event creator must be a existing user"));
+
+        dto.setImageUrl(fileStorageService.storeBase64Image(dto.getImageUrl()));
         Event event = EventCreationDTO.dtoToModel(dto);
+        event.setCreatedBy(user);
         eventRepo.save(event);
         return EventViewDTO.modelToDto(event);
     }
@@ -92,7 +106,7 @@ public class EventService {
         List<Event> allEvents = eventRepo.findAll();
 
         for (int i = 0; i < eventRepo.count(); i++) {
-            Event eventToChange = eventRepo.findById(allEvents.get(i).getId()).orElseThrow(()-> new RuntimeException("MEGA EXCEPTION"));
+            Event eventToChange = eventRepo.findById(allEvents.get(i).getId()).orElseThrow(() -> new RuntimeException("MEGA EXCEPTION"));
             if (eventToChange.getStartDate().toLocalDateTime().isBefore(today.toLocalDateTime())) {
                 eventToChange.setStatus(EventStatus.HAPPENING);
                 eventRepo.save(eventToChange);
@@ -103,6 +117,7 @@ public class EventService {
     /**
      * MELHORAR RESPOSTA?
      * Deleta evento !?
+     *
      * @param eventId
      * @return
      */

@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +37,10 @@ public class UserCreationDTO {
     @NotNull
     @NotBlank
     private UserRole role;
+    private String cellphone;
+    private String address;
+    private Timestamp birthdate;
+    private boolean visitor;
 
     @AssertTrue
     private static boolean isValidCPF(String cpf) {
@@ -72,6 +78,10 @@ public class UserCreationDTO {
                 .lastName(dto.getLastName())
                 .cpf(dto.getCpf())
                 .role(dto.getRole())
+                .cellphone(dto.getCellphone())
+                .address(dto.getAddress())
+                .birthdate(dto.getBirthdate())
+                .visitor(dto.isVisitor())
                 .build();
     }
 

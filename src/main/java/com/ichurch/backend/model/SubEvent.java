@@ -37,19 +37,19 @@ public class SubEvent {
     @JoinTable(name = "subevent_listener",
             joinColumns = @JoinColumn(name = "subevent_id"),
             inverseJoinColumns = @JoinColumn(name = "listener_id"))
-    private List<Listener> listeners;
+    private List<User> listeners;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "subevent_speaker",
             joinColumns = @JoinColumn(name = "subevent_id"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id"))
-    private List<Speaker> speakers;
+    private List<User> speakers;
 
     private String place;
 
     @PrePersist
     private void onSave(){
-        this.setListeners(new ArrayList<Listener>());
-        this.setSpeakers(new ArrayList<Speaker>());
+        this.setListeners(new ArrayList<>());
+        this.setSpeakers(new ArrayList<>());
     }
 }

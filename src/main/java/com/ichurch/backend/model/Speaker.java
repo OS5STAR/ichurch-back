@@ -28,11 +28,11 @@ public class Speaker {
     private String email;
     private Integer age;
     private Boolean visitor = true;
-    @ManyToMany(mappedBy = "speakers")
-    private List<SubEvent> subEvents;
+//    @ManyToMany(mappedBy = "speakers")
+//    private List<SubEvent> subEvents;
 
-    @PrePersist
-    private void onSave(){
-        this.setSubEvents(new ArrayList<SubEvent>());
-    }
+//    @PrePersist
+//    private void onSave(){
+//        this.setSubEvents(new ArrayList<SubEvent>());
+//    }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/event")
+@RequestMapping(value = "/api/event")
 @Validated
 public class EventController {
 
