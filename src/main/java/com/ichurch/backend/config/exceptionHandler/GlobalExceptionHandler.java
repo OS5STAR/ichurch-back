@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class, AuthenticationException.class})
     public ResponseEntity<ExceptionMessageBuilder> handleCredentials(Exception ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionMessageBuilder(ex.getMessage(), "Account Validation Error", request.getRequestURL()));
     }
 

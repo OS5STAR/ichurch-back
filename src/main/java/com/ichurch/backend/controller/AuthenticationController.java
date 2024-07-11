@@ -8,6 +8,7 @@ import com.ichurch.backend.dto.User.UserViewDTO;
 import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.UserRepo;
 import com.ichurch.backend.service.AuthenticationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserCreationDTO dto) {
-        authenticationService.save(dto);
+    public ResponseEntity<?> register(@Valid @RequestBody UserCreationDTO dto) {
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(authenticationService.save(dto));
     }
 }

@@ -1,8 +1,6 @@
 package com.ichurch.backend.controller;
 
 import com.ichurch.backend.dto.SubEvent.SubEventCreationDTO;
-import com.ichurch.backend.service.ListenerService;
-import com.ichurch.backend.service.SpeakerService;
 import com.ichurch.backend.service.SubEventService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,12 @@ public class SubEventController {
 
     @Autowired
     private SubEventService subEventService;
-    @Autowired
-    private ListenerService listenerService;
-    @Autowired
-    private SpeakerService speakerService;
 
+    @PostMapping(value = "")
+    public ResponseEntity<?> addSubEvent(@Valid @RequestBody SubEventCreationDTO dto,
+                                         @RequestParam("eventId") UUID eventId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(subEventService.create(dto, eventId));
+    }
 
     @GetMapping(value = "/{subEventId}")
     public ResponseEntity<?> getSubEvent(@PathVariable UUID subEventId) {

@@ -19,8 +19,8 @@ import java.sql.Timestamp;
 @Builder
 public class UserCreationDTO {
 
-    @NotNull
     @Email
+    @NotNull
     private String email;
     @NotNull
     @NotBlank
@@ -34,13 +34,17 @@ public class UserCreationDTO {
     @NotNull
     @NotBlank
     private String cpf;
+    private UserRole role;
     @NotNull
     @NotBlank
-    private UserRole role;
     private String cellphone;
+    @NotNull
+    @NotBlank
     private String address;
+    @NotNull
     private Timestamp birthdate;
     private boolean visitor;
+    private String profileImgUrl;
 
     @AssertTrue
     private static boolean isValidCPF(String cpf) {
@@ -69,7 +73,7 @@ public class UserCreationDTO {
         return (digito1 == cpf.charAt(9) - '0') && (digito2 == cpf.charAt(10) - '0');
     }
 
-    public static User dtoToModel(UserCreationDTO dto){
+    public static User dtoToModel(UserCreationDTO dto) {
 
         return User.builder()
                 .email(dto.getEmail())
@@ -82,6 +86,23 @@ public class UserCreationDTO {
                 .address(dto.getAddress())
                 .birthdate(dto.getBirthdate())
                 .visitor(dto.isVisitor())
+                .profileImgUrl(dto.profileImgUrl)
+                .build();
+    }
+
+    public static User dtoToModelNoPass(UserCreationDTO dto) {
+
+        return User.builder()
+                .email(dto.getEmail())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .cpf(dto.getCpf())
+                .role(dto.getRole())
+                .cellphone(dto.getCellphone())
+                .address(dto.getAddress())
+                .birthdate(dto.getBirthdate())
+                .visitor(dto.isVisitor())
+                .profileImgUrl(dto.profileImgUrl)
                 .build();
     }
 

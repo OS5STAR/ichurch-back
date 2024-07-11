@@ -17,6 +17,7 @@ public class UserViewDTO {
     private String cellphone;
     private String address;
     private Timestamp birthdate;
+    private String profileImgUrl;
     private boolean visitor;
 
     public static UserViewDTO modelToDto(User user) {
@@ -28,6 +29,7 @@ public class UserViewDTO {
                 .address(user.getAddress())
                 .birthdate(user.getBirthdate())
                 .visitor(user.isVisitor())
+                .profileImgUrl(user.getProfileImgUrl())
                 .build();
     }
 }

@@ -6,7 +6,6 @@ import com.ichurch.backend.dto.Event.EventCreationDTO;
 import com.ichurch.backend.dto.Event.EventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
-import com.ichurch.backend.model.Listener;
 import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.EventRepo;
 import com.ichurch.backend.repository.UserRepo;

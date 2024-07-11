@@ -10,6 +10,7 @@ import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.EventRepo;
 import com.ichurch.backend.repository.SubEventRepo;
 import com.ichurch.backend.repository.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class SubEventService {
                         .orElseThrow(() -> new ElementNotFoundException("Sub event not found")));
     }
 
+    @Transactional
     public SubEventViewDTO addListener(UUID subEventId, String email) {
         User user = (User) userRepo.findByEmail(email).orElseThrow(() -> new ElementNotFoundException("User not found"));
         SubEvent subEvent = subEventRepo.findById(subEventId).orElseThrow(() -> new ElementNotFoundException("Sub event not found"));
@@ -59,6 +61,7 @@ public class SubEventService {
         return SubEventViewDTO.modelToDTO(subEvent);
     }
 
+    @Transactional
     public SubEventViewDTO addSpeaker(UUID subEventId, String email) {
         User user = (User) userRepo.findByEmail(email).orElseThrow(() -> new ElementNotFoundException("User not found"));
         SubEvent subEvent = subEventRepo.findById(subEventId).orElseThrow(() -> new ElementNotFoundException("Sub event not found"));

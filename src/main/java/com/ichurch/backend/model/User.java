@@ -36,6 +36,7 @@ public class User implements UserDetails {
     private boolean visitor;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private String profileImgUrl;
 
 
     @Override

@@ -1,7 +1,5 @@
 package com.ichurch.backend.dto.SubEvent;
 
-import com.ichurch.backend.dto.Listener.ListenerViewDTO;
-import com.ichurch.backend.dto.Speaker.SpeakerViewDTO;
 import com.ichurch.backend.dto.User.UserViewDTO;
 import com.ichurch.backend.model.SubEvent;
 import lombok.AllArgsConstructor;

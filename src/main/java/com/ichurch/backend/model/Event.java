@@ -30,8 +30,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @SequenceGenerator(name = "event_number_seq", sequenceName = "event_number_seq", allocationSize = 1)
-    @Column(nullable = false, unique = true)
     private Long number;
     private String name;
     @Enumerated(EnumType.STRING)
@@ -43,10 +41,9 @@ public class Event {
     private List<SubEvent> subEvents = new ArrayList<SubEvent>();
     private Timestamp createdAt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User createdBy;
-
 
     @PrePersist
     private void onSave() {
