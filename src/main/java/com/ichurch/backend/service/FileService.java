@@ -1,21 +1,23 @@
 package com.ichurch.backend.service;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 
 @Service
-public class FileStorageService {
+public class FileService {
 
     @Value("${file.manager.upload.dir}")
     private String uploadDir;
 
-    public String storeBase64Image(String base64Image) throws IOException {
+    public String storeBase64Image(String base64Image, String idToLocate) throws IOException {
         byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
 
         File directory = new File(uploadDir);
@@ -23,7 +25,7 @@ public class FileStorageService {
             directory.mkdirs(); // Cria diretório se não existir
         }
 
-        String fileName = System.currentTimeMillis() + ".jpg"; // Nome do arquivo
+        String fileName = idToLocate + ".jpg"; // Nome do arquivo
         String filePath = uploadDir + File.separator + fileName;
 
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
@@ -31,5 +33,11 @@ public class FileStorageService {
         }
 
         return fileName; // Retorna o nome do arquivo salvo
+    }
+    @SneakyThrows()
+    public byte[] getBase64Image(String imageName) throws IOException {
+        Path imagePath = Paths.get(uploadDir, imageName);
+        return Files.readAllBytes(imagePath);
+
     }
 }

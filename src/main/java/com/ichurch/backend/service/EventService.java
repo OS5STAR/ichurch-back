@@ -14,12 +14,9 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +27,7 @@ public class EventService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileService fileService;
 
     public EventViewDTO getEventById(UUID eventId) {
         return EventViewDTO.modelToDto(eventRepo.findById(eventId).orElseThrow(() -> new ElementNotFoundException("Event not found")));
@@ -50,11 +47,24 @@ public class EventService {
         User user = userRepo.findById(dto.getUserId())
                 .orElseThrow(() -> new ElementNotFoundException("Event creator must be a existing user"));
 
-        dto.setImageUrl(fileStorageService.storeBase64Image(dto.getImageUrl()));
+        dto.setImageUrl(fileService.storeBase64Image(dto.getImageUrl(),dto.getNumber().toString()));
         Event event = EventCreationDTO.dtoToModel(dto);
         event.setCreatedBy(user);
         eventRepo.save(event);
         return EventViewDTO.modelToDto(event);
+    }
+
+    @SneakyThrows
+    public Map<String, String> getEventImage(String imgName){
+        byte[] imageBytes = fileService.getBase64Image(imgName);
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        String mimeType = "image/jpg";
+
+        Map<String, String> imageMap = new HashMap<>();
+        imageMap.put("image", base64Image);
+        imageMap.put("mimeType", mimeType);
+
+        return imageMap;
     }
 
     public EventViewDTO updateEvent(UUID eventId, EventCreationDTO dto) {
@@ -121,11 +131,11 @@ public class EventService {
      * @return
      */
     @Transactional
-    public Object deleteEvent(UUID eventId) {
+    public String deleteEvent(UUID eventId) {
         Event event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new ElementNotFoundException("Event not found"));
         eventRepo.delete(event);
 
-        return "OK";
+        return "Event " + event.getId() + " deleted";
     }
 }
