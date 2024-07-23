@@ -10,8 +10,11 @@ import com.ichurch.backend.service.SubEventService;
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +38,12 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<AllEventViewDTO> getAllEvents(){
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllEvents());
-    }
-
-    @GetMapping(value = "/image")
-    public ResponseEntity<?> getEventImage(@RequestParam("id") String eventImageUrl) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventImage(eventImageUrl));
+    public ResponseEntity<AllEventViewDTO> getAllEvents(@PageableDefault() Pageable pageable,
+                                                        @RequestParam(required = false, defaultValue = "false") boolean fetchAll){
+        if(fetchAll){
+            pageable = Pageable.unpaged();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllEvents(pageable));
     }
 
     @PostMapping(value = "/create")

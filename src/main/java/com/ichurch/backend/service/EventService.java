@@ -12,6 +12,8 @@ import com.ichurch.backend.repository.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -33,8 +35,18 @@ public class EventService {
         return EventViewDTO.modelToDto(eventRepo.findById(eventId).orElseThrow(() -> new ElementNotFoundException("Event not found")));
     }
 
-    public AllEventViewDTO getAllEvents() {
-        return AllEventViewDTO.allEventViewDTO(eventRepo.findAll().stream().map(EventViewDTO::modelToDto).collect(Collectors.toList()), eventRepo.count());
+    public AllEventViewDTO getAllEvents(Pageable pageable) {
+        if(pageable.isUnpaged()){
+            pageable = Pageable.unpaged();
+            List<Event> allEvents = eventRepo.findAll();
+            List<EventViewDTO> eventDTOs = allEvents.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
+            return AllEventViewDTO.allEventViewDTO(eventDTOs);
+        } else {
+            Page<Event> eventsPage = eventRepo.findAll(pageable);
+            List<EventViewDTO> eventDTOs = eventsPage.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
+
+            return AllEventViewDTO.allEventViewDTO(eventDTOs,pageable);
+        }
 
     }
 
@@ -54,18 +66,6 @@ public class EventService {
         return EventViewDTO.modelToDto(event);
     }
 
-    @SneakyThrows
-    public Map<String, String> getEventImage(String imgName){
-        byte[] imageBytes = fileService.getBase64Image(imgName);
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-        String mimeType = "image/jpg";
-
-        Map<String, String> imageMap = new HashMap<>();
-        imageMap.put("image", base64Image);
-        imageMap.put("mimeType", mimeType);
-
-        return imageMap;
-    }
 
     public EventViewDTO updateEvent(UUID eventId, EventCreationDTO dto) {
         Event event = eventRepo.findById(eventId)
