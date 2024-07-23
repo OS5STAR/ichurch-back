@@ -1,14 +1,15 @@
 package com.ichurch.backend.model;
 
+import com.ichurch.backend.enums.ChurchRole;
 import com.ichurch.backend.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,15 +30,14 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String cpf;
-
+    private String cellphone;
+    private String address;
+    private Timestamp birthdate;
+    private boolean visitor;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private String profileImgUrl;
 
-    public User(String email, String password, UserRole role){
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -73,4 +74,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -25,6 +25,7 @@ public class EventViewDTO {
     private EventStatus status;
     private Timestamp startDate;
     private Timestamp endDate;
+    private String imageUrl;
 
     public static EventViewDTO modelToDto(Event event) {
 
@@ -34,6 +35,7 @@ public class EventViewDTO {
                 .status(event.getStatus())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .imageUrl(event.getImageUrl())
                 .subEvents(event.getSubEvents().stream().map(SubEventViewDTO::modelToDTO).collect(Collectors.toList()))
                 .build();
     }

@@ -6,17 +6,19 @@ import com.ichurch.backend.dto.Event.EventCreationDTO;
 import com.ichurch.backend.dto.Event.EventViewDTO;
 import com.ichurch.backend.enums.EventStatus;
 import com.ichurch.backend.model.Event;
-import com.ichurch.backend.model.Listener;
+import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.EventRepo;
+import com.ichurch.backend.repository.UserRepo;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,25 +26,46 @@ public class EventService {
 
     @Autowired
     private EventRepo eventRepo;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private FileService fileService;
 
     public EventViewDTO getEventById(UUID eventId) {
         return EventViewDTO.modelToDto(eventRepo.findById(eventId).orElseThrow(() -> new ElementNotFoundException("Event not found")));
     }
 
-    public AllEventViewDTO getAllEvents() {
-        return AllEventViewDTO.allEventViewDTO(eventRepo.findAll().stream().map(EventViewDTO::modelToDto).collect(Collectors.toList()), eventRepo.count());
+    public AllEventViewDTO getAllEvents(Pageable pageable) {
+        if(pageable.isUnpaged()){
+            pageable = Pageable.unpaged();
+            List<Event> allEvents = eventRepo.findAll();
+            List<EventViewDTO> eventDTOs = allEvents.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
+            return AllEventViewDTO.allEventViewDTO(eventDTOs);
+        } else {
+            Page<Event> eventsPage = eventRepo.findAll(pageable);
+            List<EventViewDTO> eventDTOs = eventsPage.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
+
+            return AllEventViewDTO.allEventViewDTO(eventDTOs,pageable);
+        }
 
     }
 
+    @SneakyThrows
     public EventViewDTO createEvent(EventCreationDTO dto) {
         if (isInvalid(dto)) {
             throw new IllegalArgumentException("Fields missing");
         }
 
+        User user = userRepo.findById(dto.getUserId())
+                .orElseThrow(() -> new ElementNotFoundException("Event creator must be a existing user"));
+
+        dto.setImageUrl(fileService.storeBase64Image(dto.getImageUrl(),dto.getNumber().toString()));
         Event event = EventCreationDTO.dtoToModel(dto);
+        event.setCreatedBy(user);
         eventRepo.save(event);
         return EventViewDTO.modelToDto(event);
     }
+
 
     public EventViewDTO updateEvent(UUID eventId, EventCreationDTO dto) {
         Event event = eventRepo.findById(eventId)
@@ -92,7 +115,7 @@ public class EventService {
         List<Event> allEvents = eventRepo.findAll();
 
         for (int i = 0; i < eventRepo.count(); i++) {
-            Event eventToChange = eventRepo.findById(allEvents.get(i).getId()).orElseThrow(()-> new RuntimeException("MEGA EXCEPTION"));
+            Event eventToChange = eventRepo.findById(allEvents.get(i).getId()).orElseThrow(() -> new RuntimeException("MEGA EXCEPTION"));
             if (eventToChange.getStartDate().toLocalDateTime().isBefore(today.toLocalDateTime())) {
                 eventToChange.setStatus(EventStatus.HAPPENING);
                 eventRepo.save(eventToChange);
@@ -103,15 +126,16 @@ public class EventService {
     /**
      * MELHORAR RESPOSTA?
      * Deleta evento !?
+     *
      * @param eventId
      * @return
      */
     @Transactional
-    public Object deleteEvent(UUID eventId) {
+    public String deleteEvent(UUID eventId) {
         Event event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new ElementNotFoundException("Event not found"));
         eventRepo.delete(event);
 
-        return "OK";
+        return "Event " + event.getId() + " deleted";
     }
 }

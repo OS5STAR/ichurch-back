@@ -13,4 +13,5 @@ public class UserAuthenticationDTO {
 
     private String email;
     private String password;
+
 }
