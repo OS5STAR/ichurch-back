@@ -28,29 +28,18 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionMessageBuilder("Resource not found", "Invalid Endpoint", request.getRequestURL()));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionMessageBuilder> handleIllegalArgsException(IllegalArgumentException ex) {
+    @ExceptionHandler({ElementNotFoundException.class,
+                        RedundancyException.class,
+                        IllegalArgumentException.class,
+                        MethodArgumentNotValidException.class,
+                        BadCredentialsException.class,
+                        InternalAuthenticationServiceException.class,
+                        AuthenticationException.class})
+    public ResponseEntity<ExceptionMessageBuilder> handleIllegalArgsException(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionMessageBuilder(ex.getMessage(), "Illegal Arguments", request.getRequestURL()));
     }
 
-    @ExceptionHandler({ElementNotFoundException.class, RedundancyException.class})
-    public ResponseEntity<ExceptionMessageBuilder> handleElementNotFoundException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ExceptionMessageBuilder(ex.getMessage(), "Element Error", request.getRequestURL()));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionMessageBuilder> handleMethodArgsNotValidExceptions(MethodArgumentNotValidException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionMessageBuilder(ex, "Invalid Parameters", request.getRequestURL()));
-    }
-
-    @ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class, AuthenticationException.class})
-    public ResponseEntity<ExceptionMessageBuilder> handleCredentials(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionMessageBuilder(ex.getMessage(), "Account Validation Error", request.getRequestURL()));
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionMessageBuilder> handleException(Exception ex) {

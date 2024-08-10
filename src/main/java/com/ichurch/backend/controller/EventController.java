@@ -38,12 +38,13 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<AllEventViewDTO> getAllEvents(@PageableDefault() Pageable pageable,
-                                                        @RequestParam(required = false, defaultValue = "false") boolean fetchAll){
+    public ResponseEntity<AllEventViewDTO> getAllEvents(@PageableDefault(value = Integer.MAX_VALUE) Pageable pageable,
+                                                        @RequestParam(required = false, defaultValue = "false") boolean fetchAll,
+                                                        @RequestParam(required = false, defaultValue = "", value = "q") String term){
         if(fetchAll){
             pageable = Pageable.unpaged();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllEvents(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllEvents(pageable,term));
     }
 
     @PostMapping(value = "/create")

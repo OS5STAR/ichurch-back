@@ -30,7 +30,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Long number;
     private String name;
     @Enumerated(EnumType.STRING)
     private EventStatus status;

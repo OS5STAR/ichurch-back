@@ -29,9 +29,8 @@ public class FileService {
         byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
 
         File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs(); // Cria diretório se não existir
-        }
+        if (!directory.exists()) {directory.mkdirs();} // Cria diretório se não existir
+
 
         String fileName = idToLocate + ".jpg"; // Nome do arquivo
         String filePath = uploadDir + File.separator + fileName;

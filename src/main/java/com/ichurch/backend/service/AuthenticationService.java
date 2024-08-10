@@ -3,9 +3,7 @@ package com.ichurch.backend.service;
 import com.ichurch.backend.customExceptions.ElementNotFoundException;
 import com.ichurch.backend.dto.User.UserCreationDTO;
 import com.ichurch.backend.dto.User.UserViewDTO;
-import com.ichurch.backend.model.User;
 import com.ichurch.backend.repository.UserRepo;
-import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,13 +23,13 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByEmail(username).orElseThrow(() -> new ElementNotFoundException("Usuário inexistente ou senha inválida"));
+        return userRepo.findUserDetailsByEmail(username).orElseThrow(() -> new ElementNotFoundException("Usuário inexistente ou senha inválida"));
     }
 
     @SneakyThrows
     public UserViewDTO save(UserCreationDTO dto) {
 
-        if (userRepo.findByEmail(dto.getEmail()).isPresent())
+        if (userRepo.findUserDetailsByEmail(dto.getEmail()).isPresent())
             throw new IllegalArgumentException("User already registered");
         if (dto.getProfileImgUrl() != null) {
             dto.setProfileImgUrl(fileService.storeBase64Image(dto.getProfileImgUrl(), dto.getCpf()));

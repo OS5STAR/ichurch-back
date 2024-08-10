@@ -46,7 +46,9 @@ public class ExceptionMessageBuilder {
     public ExceptionMessageBuilder(MethodArgumentNotValidException ex, String error, StringBuffer URI) {
         List<messageObj> listErrors = new ArrayList<>();
         for(var er : ex.getBindingResult().getAllErrors()){
-            listErrors.add(new messageObj(er.getCodes()[1].substring(er.getCodes()[1].indexOf(".")+1), er.getDefaultMessage()));
+            if(er.getCodes() != null) {
+                listErrors.add(new messageObj(er.getCodes()[1].substring(er.getCodes()[1].indexOf(".")+1), er.getDefaultMessage()));
+            }
         }
         this.validationError = listErrors;
         this.message = "Request validation error.";
@@ -55,7 +57,7 @@ public class ExceptionMessageBuilder {
     }
 
     @Data
-    private class messageObj{
+    private static class messageObj{
         private String fieldName;
         private String errorCause;
 

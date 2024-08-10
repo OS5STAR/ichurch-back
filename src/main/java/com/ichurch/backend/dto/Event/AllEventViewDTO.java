@@ -19,12 +19,12 @@ public class AllEventViewDTO {
     private List<EventViewDTO> events;
     private Map<String, Object> page;
 
-    public static <T> AllEventViewDTO allEventViewDTO(List<EventViewDTO> eventViewList, Pageable pageable){
+    public static AllEventViewDTO allEventViewDTO(List<EventViewDTO> eventViewList, Pageable pageable, int totalPages){
         HashMap<String, Object> map = new HashMap<>();
         map.put("paged", true);
         map.put("offset", pageable.getOffset());
         map.put("pageNumber", pageable.getPageNumber());
-        map.put("pageSize", pageable.getPageSize());
+        map.put("totalPages", totalPages);
 
         return AllEventViewDTO.builder()
                 .events(eventViewList)
@@ -33,13 +33,10 @@ public class AllEventViewDTO {
     }
 
     public static AllEventViewDTO allEventViewDTO(List<EventViewDTO> eventViewList){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("paged", false);
 
 
         return AllEventViewDTO.builder()
                 .events(eventViewList)
-                .page(map)
                 .build();
     }
 

@@ -31,9 +31,9 @@ public class SubEventController {
     }
 
     @PostMapping(value = "/{subEventId}")
-    public ResponseEntity<?> addListener(@PathVariable UUID subEventId,
-                                         @RequestParam(required = false) String listener,
-                                         @RequestParam(required = false) String speaker) {
+    public ResponseEntity<?> insertUserIntoEvent(@PathVariable UUID subEventId,
+                                                 @RequestParam(required = false) String listener,
+                                                 @RequestParam(required = false) String speaker) {
         if (listener != null && speaker != null) {
             return ResponseEntity.badRequest().body("You can only add either a listener or a speaker, not both.");
         }

@@ -48,7 +48,7 @@ public class SubEventService {
 
     @Transactional
     public SubEventViewDTO addListener(UUID subEventId, String email) {
-        User user = (User) userRepo.findByEmail(email).orElseThrow(() -> new ElementNotFoundException("User not found"));
+        User user = (User) userRepo.findUserDetailsByEmail(email).orElseThrow(() -> new ElementNotFoundException("User not found"));
         SubEvent subEvent = subEventRepo.findById(subEventId).orElseThrow(() -> new ElementNotFoundException("Sub event not found"));
 
         if (subEvent.getListeners().contains(user)) {
@@ -63,7 +63,7 @@ public class SubEventService {
 
     @Transactional
     public SubEventViewDTO addSpeaker(UUID subEventId, String email) {
-        User user = (User) userRepo.findByEmail(email).orElseThrow(() -> new ElementNotFoundException("User not found"));
+        User user = (User) userRepo.findUserDetailsByEmail(email).orElseThrow(() -> new ElementNotFoundException("Not able to add user to sub event"));
         SubEvent subEvent = subEventRepo.findById(subEventId).orElseThrow(() -> new ElementNotFoundException("Sub event not found"));
 
         if (subEvent.getSpeakers().contains(user)) {

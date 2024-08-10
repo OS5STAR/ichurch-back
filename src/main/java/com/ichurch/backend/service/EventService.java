@@ -35,9 +35,13 @@ public class EventService {
         return EventViewDTO.modelToDto(eventRepo.findById(eventId).orElseThrow(() -> new ElementNotFoundException("Event not found")));
     }
 
-    public AllEventViewDTO getAllEvents(Pageable pageable) {
+    public AllEventViewDTO getAllEvents(Pageable pageable, String q) {
+        if(!q.isEmpty() || !q.isBlank()){
+            Page<Event> allEvents = eventRepo.findAllByNameContaining(q, pageable);
+            List<EventViewDTO> eventDTOs = allEvents.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
+            return AllEventViewDTO.allEventViewDTO(eventDTOs, pageable, allEvents.getTotalPages());
+        }
         if(pageable.isUnpaged()){
-            pageable = Pageable.unpaged();
             List<Event> allEvents = eventRepo.findAll();
             List<EventViewDTO> eventDTOs = allEvents.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
             return AllEventViewDTO.allEventViewDTO(eventDTOs);
@@ -45,7 +49,7 @@ public class EventService {
             Page<Event> eventsPage = eventRepo.findAll(pageable);
             List<EventViewDTO> eventDTOs = eventsPage.stream().map(EventViewDTO::modelToDto).collect(Collectors.toList());
 
-            return AllEventViewDTO.allEventViewDTO(eventDTOs,pageable);
+            return AllEventViewDTO.allEventViewDTO(eventDTOs,pageable, eventsPage.getTotalPages());
         }
 
     }
@@ -56,7 +60,7 @@ public class EventService {
             throw new IllegalArgumentException("Fields missing");
         }
 
-        User user = userRepo.findById(dto.getUserId())
+        User user = userRepo.findUserByEmail(dto.getUserEmail())
                 .orElseThrow(() -> new ElementNotFoundException("Event creator must be a existing user"));
 
         dto.setImageUrl(fileService.storeBase64Image(dto.getImageUrl(),dto.getNumber().toString()));

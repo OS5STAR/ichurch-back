@@ -33,7 +33,7 @@ public class EventCreationDTO {
     @NotNull(message = "Image URL can't be null.")
     private String imageUrl;
     @NotNull
-    private UUID userId;
+    private String userEmail;
     private Long number;
 
     @AssertTrue(message = "Ending date must be after Starting date.")
@@ -48,7 +48,6 @@ public class EventCreationDTO {
                 .endDate(dto.getEndDate())
                 .status(dto.getStatus())
                 .imageUrl(String.valueOf(dto.getImageUrl()))
-                .number(dto.getNumber())
                 .build();
     }
 }
